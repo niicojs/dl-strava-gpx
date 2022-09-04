@@ -1,0 +1,19 @@
+{
+  "name": "dl-strava-gpx",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "prettier": {
+    "singleQuote": true
+  },
+  "type": "module",
+  "dependencies": {
+    "date-fns": "^2.29.2",
+    "dotenv": "^16.0.2",
+    "playwright": "^1.25.1"
+  }
+}
