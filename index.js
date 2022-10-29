@@ -1,5 +1,5 @@
 import fs from 'fs/promises';
-import { chromium } from 'playwright';
+import { chromium } from 'playwright-chromium';
 import dotenv from 'dotenv';
 import { addSeconds, format, parse } from 'date-fns';
 
@@ -43,17 +43,17 @@ const getDataFromStrava = async () => {
   await context.close();
   await browser.close();
 
-  await fs.writeFile(
-    'data.json',
-    JSON.stringify(
-      {
-        info,
-        data,
-      },
-      null,
-      2
-    )
-  );
+  // await fs.writeFile(
+  //   'data.json',
+  //   JSON.stringify(
+  //     {
+  //       info,
+  //       data,
+  //     },
+  //     null,
+  //     2
+  //   )
+  // );
 
   return { info, data };
 };
@@ -83,12 +83,11 @@ for (let i = 0; i < data.latlng.length; i++) {
   const t = format(addSeconds(start, sec || i), `yyyy-MM-dd'T'HH:mm:ssX`);
   const time = `<time>${t}</time>`;
   steps.push(
-    `<trkpt lat="${pt[0]}" lon="${pt[1]}">${alt}${name}${time}</trkpt>`
+    `    <trkpt lat="${pt[0]}" lon="${pt[1]}">${alt}${name}${time}</trkpt>`
   );
 }
 
-const xml = `
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+const xml = `<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" creator="https://www.mapstogpx.com/strava" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" xmlns:gpxdata="http://www.cluetrust.com/XML/GPXDATA/1/0">
  <metadata>
   <name>${info.title}</name>
@@ -98,7 +97,7 @@ const xml = `
  <trk>
   <name>${info.title}</name>
   <trkseg>
-  ${steps.join('\n')}
+${steps.join('\n')}
   </trkseg>
  </trk>
 </gpx>
