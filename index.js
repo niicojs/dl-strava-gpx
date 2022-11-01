@@ -5,7 +5,15 @@ import { addSeconds, format, parse } from 'date-fns';
 
 dotenv.config();
 
-const activity = process.env.STRAVA_ACTIVITY;
+let activity = process.env.STRAVA_ACTIVITY;
+if (!activity) {
+  console.error('No configuration!');
+  process.exit(0);
+}
+
+if (!activity.startsWith('https://www.strava.com/activities/')) {
+  activity = 'https://www.strava.com/activities/' + activity;
+}
 
 const getDataFromStrava = async () => {
   console.log('Get data from strava...');
